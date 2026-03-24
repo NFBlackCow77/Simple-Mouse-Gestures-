@@ -9,11 +9,11 @@ const MIN_DIST_GLOBAL = 5;
 const MIN_LEN_FOR_SCROLL = 30;
 const MIN_HEIGHT_FOR_V = 30;
 const RECOGNITION_THRESHOLD = 80;
-const RETURN_TOLERANCE = 100;
+const RETURN_TOLERANCE = 150; // 복귀 허용 거리 (기존 100 -> 150)
 
 // --- [낙서 및 오작동 방지 설정] ---
-const SCROLL_CHAOS_RATIO = 3.0; 
-const V_SHAPE_WIDTH_RATIO = 1.5; // 각도 유연성 상향 (기존 0.8 -> 1.5)
+const SCROLL_CHAOS_RATIO = 3.0;
+const V_SHAPE_WIDTH_RATIO = 3.5; // 각도 유연성 상향 (기존 2.5 -> 3.5, 기울어진 V자 허용)
 const MAX_V_EFFICIENCY_RATIO = 2.6;
 const STRAIGHT_TOLERANCE = 0.6;
 const SIMPLE_MOVE_LINEARITY_LIMIT = 1.25;
@@ -228,7 +228,7 @@ window.addEventListener('pointerup', (e) => {
     const wentUp = upHeight > MIN_HEIGHT_FOR_V;   
     
     const distY = Math.abs(endY - startY);
-    const returnedY = distY < RETURN_TOLERANCE && distY < (gestureHeight * 0.8);
+    const returnedY = distY < RETURN_TOLERANCE && distY < (gestureHeight * 0.6);
 
     const isMostlyUp = upHeight > downHeight;   
     const isMostlyDown = downHeight > upHeight; 
