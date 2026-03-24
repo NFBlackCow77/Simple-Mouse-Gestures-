@@ -245,8 +245,16 @@ window.addEventListener('pointerup', (e) => {
 
     let action = null;
 
-    // 1. [닫힌 탭 열기 (UR)] — L자 형태 검증: 먼저 위로, 그 다음 오른쪽
-    if (wentUp && diffX > RECOGNITION_THRESHOLD) {
+    // 1. [새로고침 (DU)] — V자 판정 우선 (방향 무관)
+    if (wentDown && returnedY && isMostlyDown) {
+        if (!isTooWideShape && !isRepetitiveChaos && isCleanV) action = 'refresh';
+    }
+    // 2. [탭 닫기 (UD)] — V자 판정 우선 (방향 무관)
+    else if (wentUp && returnedY && isMostlyUp) {
+        if (!isTooWideShape && !isRepetitiveChaos && isCleanV) action = 'close';
+    }
+    // 3. [닫힌 탭 열기 (UR)] — L자 형태 검증: 먼저 위로, 그 다음 오른쪽
+    else if (wentUp && diffX > RECOGNITION_THRESHOLD) {
         // 최고점(minY) 인덱스 찾기
         let peakIdx = 0;
         for (let i = 1; i < path.length; i++) {
@@ -265,14 +273,6 @@ window.addEventListener('pointerup', (e) => {
                 action = 'reopen';
             }
         }
-    }
-    // 2. [새로고침 (DU)] 
-    else if (wentDown && returnedY && isMostlyDown) { 
-        if (!isTooWideShape && !isRepetitiveChaos && isCleanV) action = 'refresh';
-    }
-    // 3. [탭 닫기 (UD)] 
-    else if (wentUp && returnedY && isMostlyUp) { 
-        if (!isTooWideShape && !isRepetitiveChaos && isCleanV) action = 'close';
     }
     // 4. [단순 이동 (상하좌우)]
     else {
